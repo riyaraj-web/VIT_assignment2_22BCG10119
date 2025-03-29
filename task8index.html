@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registration Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #f5c6ec, #fdf8d8);
+      display: flex;
+      justify-content: center;
+      padding: 30px;
+    }
+    .container {
+      background: white;
+      padding: 25px 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+    h2 {
+      color: blue;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+    .languages, .gender {
+      display: flex;
+      gap: 15px;
+      margin: 5px 0;
+    }
+    button {
+      background: red;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      width: 100%;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .checkbox-group {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Registration Form</h2>
+    <form id="regForm">
+      <label>First Name</label>
+      <input type="text" id="firstName">
+      <div class="error" id="firstNameError"></div>
+
+      <label>Last Name</label>
+      <input type="text" id="lastName">
+      <div class="error" id="lastNameError"></div>
+
+      <label>Email</label>
+      <input type="email" id="email">
+      <div class="error" id="emailError"></div>
+
+      <label>Password</label>
+      <input type="password" id="password">
+      <div class="error" id="passwordError"></div>
+
+      <label>Re-enter Password</label>
+      <input type="password" id="confirmPassword">
+      <div class="error" id="confirmPasswordError"></div>
+
+      <label>Gender</label>
+      <div class="gender">
+        <label><input type="radio" name="gender" value="Male"> Male</label>
+        <label><input type="radio" name="gender" value="Female"> Female</label>
+      </div>
+      <div class="error" id="genderError"></div>
+
+      <label>Age</label>
+      <input type="number" id="age">
+      <div class="error" id="ageError"></div>
+
+      <label>Phone Number</label>
+      <input type="text" id="phone">
+      <div class="error" id="phoneError"></div>
+
+      <label>Address</label>
+      <textarea id="address" rows="3"></textarea>
+      <div class="error" id="addressError"></div>
+
+      <label>State</label>
+      <input type="text" id="state">
+      <div class="error" id="stateError"></div>
+
+      <label>Country</label>
+      <select id="country">
+        <option value="">Choose your country</option>
+        <option>India</option>
+        <option>USA</option>
+        <option>UK</option>
+        <option>Other</option>
+      </select>
+      <div class="error" id="countryError"></div>
+
+      <label>Languages known</label>
+      <div class="languages">
+        <label><input type="checkbox" name="lang" value="English"> English</label>
+        <label><input type="checkbox" name="lang" value="Kannada"> Kannada</label>
+        <label><input type="checkbox" name="lang" value="Hindi"> Hindi</label>
+        <label><input type="checkbox" name="lang" value="Telugu"> Telugu</label>
+      </div>
+      <div class="error" id="languageError"></div>
+
+      <div class="checkbox-group">
+        <label><input type="checkbox" id="declaration"> I hereby declare all details are true</label>
+        <div class="error" id="declarationError"></div>
+      </div>
+
+      <br>
+      <button type="submit">REGISTER</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("regForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      let isValid = true;
+
+      function showError(id, message) {
+        document.getElementById(id).innerText = message;
+        isValid = false;
+      }
+
+      function clearErrors() {
+        const errors = document.querySelectorAll(".error");
+        errors.forEach(err => err.innerText = "");
+        isValid = true;
+      }
+
+      clearErrors();
+
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName = document.getElementById("lastName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const gender = document.querySelector('input[name="gender"]:checked');
+      const age = document.getElementById("age").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const state = document.getElementById("state").value.trim();
+      const country = document.getElementById("country").value;
+      const languages = document.querySelectorAll('input[name="lang"]:checked');
+      const declaration = document.getElementById("declaration").checked;
+
+      if (firstName === "") showError("firstNameError", "First name is required.");
+      if (lastName === "") showError("lastNameError", "Last name is required.");
+      if (email === "" || !/\S+@\S+\.\S+/.test(email)) showError("emailError", "Valid email required.");
+      if (password.length < 6) showError("passwordError", "Password must be at least 6 characters.");
+      if (confirmPassword !== password) showError("confirmPasswordError", "Passwords do not match.");
+      if (!gender) showError("genderError", "Please select gender.");
+      if (age === "" || age < 18) showError("ageError", "Enter a valid age (18+).");
+      if (!/^\d{10}$/.test(phone)) showError("phoneError", "Enter a valid 10-digit phone number.");
+      if (address === "") showError("addressError", "Address cannot be empty.");
+      if (state === "") showError("stateError", "State is required.");
+      if (country === "") showError("countryError", "Select a country.");
+      if (languages.length === 0) showError("languageError", "Select at least one language.");
+      if (!declaration) showError("declarationError", "You must accept the declaration.");
+
+      if (isValid) {
+        alert("Form submitted successfully!");
+        // You can add form submission logic here (like sending to backend)
+      }
+    });
+  </script>
+</body>
+</html>
