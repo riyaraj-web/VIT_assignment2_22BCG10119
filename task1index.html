@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reverse Number</title>
+</head>
+<body>
+  <h2>Reverse a Number</h2>
+
+  <label for="numberInput">Enter a number:</label>
+  <input type="number" id="numberInput">
+  <button onclick="handleReverse()">Reverse</button>
+
+  <p id="result"></p>
+
+  <script>
+    function handleReverse() {
+      const input = document.getElementById("numberInput").value;
+      const reversed = reverseNumber(input);
+      document.getElementById("result").innerText = `Reversed Number: ${reversed}`;
+    }
+  </script>
+
+  <!-- Link your external JavaScript file here -->
+  <script src="task1Script.js"></script>
+</body>
+</html>
